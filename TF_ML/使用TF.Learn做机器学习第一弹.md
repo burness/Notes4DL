@@ -1,5 +1,6 @@
 ## 前言
 前段时间内，Google在TensorFlow Dev Summit大会上吹了一帮使用TensorFlow做机器学习，说是仿照scikit-learn的api来写的，看着很有诱惑性
+
 ![](../images//tf-mltookit-00.png)
 有一些算法可能官方文档里面没有，但是官方仓库里面是都有代码的，比如GMM和WALS:[contrib/factorization/python/ops](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/factorization/python/ops).
 第一弹，我们介绍基本的分类模型的使用，会主要介绍LinearClassifier\SVM\Random Forest\wide and deep，会由浅至深在每个算法中分别讲述需要注意的点。
