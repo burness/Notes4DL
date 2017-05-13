@@ -34,7 +34,7 @@ model通常可以直接通过数学方法来建模求解，而基于逼近的exp
 通常基于逼近的explicit model分为确定性（变分方法：如VAE的lower bound）和随机性的方法（马尔科夫链蒙特卡洛方法）。
 
  - VAE lower bound：
-![](../imagesgm-vae-01.png)
+![](./images/gm-vae-01.png)
 
  - 马尔科夫链蒙特卡洛方法（MCMC），一种经典的基于马尔科夫链的抽样方法，通过多次来拟合分布。比较好的教程：[A Beginner's Guide to Monte Carlo Markov Chain MCMC Analysis](https://www.youtube.com/watch?v=vTUwEu53uzs), [An Introduction to MCMC for Machine Learning](http://www.cs.princeton.edu/courses/archive/spr06/cos598C/papers/AndrieuFreitasDoucetJordan2003.pdf).
 
@@ -61,10 +61,10 @@ GAN主要由两部分构成：generator和discriminator，generator主要是从�
 鉴别是否为假钞，最终整个gan会达到所谓的纳什均衡，Goodfellow在他的paper[]()中有严格的数学证明，当$p_G$==$p_{data}$时达到
 全局最优：
 
-![](../imagesgan-02.png)
+![](./images/gan-02.png)
 
 另一个比较明显看得懂的图如下：
-![](../imagesgan-03.png)
+![](./images/gan-03.png)
 图中黑色点线为真实数据分布$p_{data}$，绿色线为generator生成的数据分布$p_{G}$,而Discriminator就是蓝色点线，其目的是为了将$p_{data}$和$p_{G}$
 区分，(a)中是初始状态，然后会更新Discriminator中的参数，若干次step之后，Discriminator有了较大的判断力即到了(b)的状态，之后会更新G的模型使其生成的数据分布（绿色线）更加趋近与真实数据分布，
 若干次G和D的模型参数更新后，理论上最终会达到(d)的状态即G能够产生和真实数据完全一致的分布(证明见上一张图)，如从随机数据分布生成人脸像。
@@ -78,7 +78,7 @@ GAN主要由两部分构成：generator和discriminator，generator主要是从�
 ### DCGAN
 
 GAN出来后很多相关的应用和方法都是基于DCGAN的结构，DCGAN即"Deep Convolution GAN"，通常会有一些约定俗成的规则：
-![](../imagesdcgan-01.png)
+![](./images/dcgan-01.png)
 
  - 在Discriminator和generator中大部分层都使用batch normalization，而在最后一层时通常不会使用batch normalizaiton，目的
  是为了保证模型能够学习到数据的正确的均值和方差；
@@ -87,7 +87,7 @@ GAN出来后很多相关的应用和方法都是基于DCGAN的结构，DCGAN即"
 
 
 ### 各种GAN
-![](../imagesgans.jpg)
+![](./images/gans.jpg)
 这里有个大神把各种gan的paper都做了一个统计[AdversarialNetsPapers](https://github.com/zhangqianhui/AdversarialNetsPapers)
 
 这里大家有更多的兴趣可以直接去看对应的paper，我接下来会尽我所能描述下infogan和AC-GAN这两块的内容
@@ -109,22 +109,22 @@ InfoGAN能够在完全无监督信息（是否带眼睛等等）下能够学习�
 即generator的输出和input的c的$I(c;G(z,c))$应该会大。
 所以，InfoGAN就变成如下的优化问题：
 
-![](../imagesInfoGAN-01.png)
+![](./images/InfoGAN-01.png)
 因为互信息的计算需要后验概率的分布（下图红线部分），在实际中很难直接使用，因此，在实际训练中一般不会直接最大化$I(c;G(z,c))$
-![](../imagesmatul-info-01.png)
+![](./images/matul-info-01.png)
 这里作者采用和VAE类似的方法，增加一个辅助的数据分布为后验概率的low bound：
 所以，这里互信息的计算如下：
-![](../imagesmutal-info-02.png)
+![](./images/mutal-info-02.png)
 这里相关的证明就不深入了，有兴趣的可以去看看paper。
 
 ### 实验
 我写的一版基于TensorFlow的Info-GAN实现：[Info-GAN]()https://github.com/burness/tensorflow-101/tree/master/GAN/Info-GAN
 random的label信息，和对应生成的图像：
-![](../imagesinfogan-result-01.png)
-![](../imagesinfogan-result-02.png)
+![](./images/infogan-result-01.png)
+![](./images/infogan-result-02.png)
 
 不同random变量控制产生同一class下的不同输出：
-![](../imagesinfogan-result-03.png)
+![](./images/infogan-result-03.png)
 
 ## AC-GAN
 AC-GAN即auxiliary classifier GAN，对应的paper：[https://arxiv.org/abs/1610.09585](https://arxiv.org/abs/1610.09585), 如前面的示意图中所示，AC-GAN的Discriminator中会输出相应的class label的概率，然后更改loss fuction，增加class预测正确的概率，
@@ -133,11 +133,11 @@ AC-GAN即auxiliary classifier GAN，对应的paper：[https://arxiv.org/abs/1610
 ### 实验
 各位有兴趣的可以拿代码在其他的数据集上也跑一跑，AC-GAN能够有效利用class label的信息，不仅可以在G时指定需要生成的image的label，同事该class label也能在Discriminator用来扩展loss函数，增加整个对抗网络的性能。
 random的label信息，和对应生成的图像：
-![](../imagesacgan-result-00.png)
-![](../imagesacgan-result-01.png)
+![](./images/acgan-result-00.png)
+![](./images/acgan-result-01.png)
 
 不同random变量控制产生同一class下的不同输出：
-![](../imagesacgan-result-02.png)
+![](./images/acgan-result-02.png)
 
 
 ## Summary
